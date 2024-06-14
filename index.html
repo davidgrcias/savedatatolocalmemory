@@ -1,0 +1,73 @@
+<html>
+  <head> </head>
+  <body>
+    <form id="dataForm">
+      <label for="name">Name:</label>
+      <input type="text" id="name" required /> <br />
+      <label for="email">Email:</label>
+      <input type="email" id="email" required /> <br />
+      <button type="submit">Add Data</button>
+    </form>
+
+    <h2>Data:</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="dataTable"></tbody>
+    </table>
+
+    <script>
+      document
+        .getElementById("dataForm")
+        .addEventListener("submit", function (event) {
+          addData();
+        });
+
+      function addData() {
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+
+        var currentDate = new Date();
+        var timestamp = currentDate.getTime();
+        var data = `${name}#${email}`;
+
+        localStorage.setItem("data_" + timestamp, data);
+        displayData();
+        document.getElementById("dataForm").reset();
+      }
+
+      function deleteData(key) {
+        localStorage.removeItem(key);
+        displayData();
+      }
+
+      function displayData() {
+        var tableBody = document.getElementById("dataTable");
+        tableBody.innerHTML = "";
+
+        for (let i = 0; i < localStorage.length; i++) {
+          var key = localStorage.key(i);
+          if (key && key.startsWith("data_")) {
+            var value = localStorage.getItem(key);
+            var dataParts = value.split("#");
+
+            var row = document.createElement("tr");
+            row.innerHTML = `
+                      <td>${dataParts[0]}</td>
+                      <td>${dataParts[1]}</td>
+                      <td><button onclick="deleteData('${key}')">Delete</button></td>
+                  `;
+            tableBody.appendChild(row);
+          }
+        }
+      }
+
+      window.onload = displayData;
+    </script>
+  </body>
+</html>
