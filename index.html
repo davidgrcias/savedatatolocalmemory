@@ -34,7 +34,7 @@
 
         var currentDate = new Date();
         var timestamp = currentDate.getTime();
-        var data = "${name}#${email}";
+        var data = `${name}#${email}`;
 
         localStorage.setItem("data_" + timestamp, data);
         displayData();
@@ -56,11 +56,11 @@
             var dataParts = value.split("#");
 
             var row = document.createElement("tr");
-            row.innerHTML = "
+            row.innerHTML = `
                       <td>${dataParts[0]}</td>
                       <td>${dataParts[1]}</td>
                       <td><button onclick="deleteData('${key}')">Delete</button></td>
-                  ";
+                  `;
             tableBody.appendChild(row);
           }
         }
